@@ -12,22 +12,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Ensure the latest version in CHANGELOG
+      - name: Ensure the latest version is in CHANGELOG
         run: |
-          grep -q "## \[${{ github.ref_name }}\]" CHANGELOG.md || (echo "Version not found in CHANGELOG" && exit 1)
+          VERSION=${{ github.ref_name }}
+          VERSION="${VERSION:1}"
+          grep -q "## \[$VERSION\]" CHANGELOG.md || (echo "Version not found in CHANGELOG" && exit 1)
 
       - name: Fetch previous tag
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           git tag -l 'v*' | sort -V | tail -n 2 | head -n 1 > /tmp/previous-tag
+          cat /tmp/previous-tag
+
+      - name: Ensure the previous version is not in README
+        run: |
+          grep -q "$(cat /tmp/previous-tag)" README.md && (echo "Previous version found in README" && exit 1) || echo "Previous version not found in README"
 
       - name: Fetch the commit of the previous tag
         run: |
           git fetch --depth=1 origin $(cat /tmp/previous-tag)
-
-      - name: Ensure the previous version not in README
-        run: |
-          grep -q "$(cat /tmp/previous-tag)" README.md && (echo "Previous version found in README" && exit 1)
 
       - name: Get diff
         run: |
