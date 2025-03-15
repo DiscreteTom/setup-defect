@@ -15,7 +15,7 @@ jobs:
       - name: Fetch previous tag
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-          git describe --tags --abbrev=0 HEAD^ > /tmp/previous-tag
+          git tag -l 'v*' | sort -V | tail -n 2 | head -n 1 > /tmp/previous-tag
 
       - name: Fetch the commit of the previous tag
         run: |
