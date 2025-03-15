@@ -29,6 +29,11 @@ runs:
         chmod +x defect
         echo /tmp/defect >> $GITHUB_PATH
 
+    - name: Add Defect to PATH
+      if: steps.cache-defect.outputs.cache-hit == 'true'
+      shell: bash
+      run: echo /tmp/defect >> $GITHUB_PATH
+
 branding:
   icon: "box"
   color: "green"
