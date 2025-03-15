@@ -12,6 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ensure the latest version in CHANGELOG
+        run: |
+          grep -q "## \[${{ github.ref_name }}\]" CHANGELOG.md || (echo "Version not found in CHANGELOG" && exit 1)
+
       - name: Fetch previous tag
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
@@ -21,9 +25,13 @@ jobs:
         run: |
           git fetch --depth=1 origin $(cat /tmp/previous-tag)
 
+      - name: Ensure the previous version not in README
+        run: |
+          grep -q "$(cat /tmp/previous-tag)" README.md && (echo "Previous version found in README" && exit 1)
+
       - name: Get diff
         run: |
-          git diff $(cat /tmp/previous-tag)..HEAD -U20 CHANGELOG.md README.md > /tmp/diff.txt
+          git diff $(cat /tmp/previous-tag)..HEAD -U10 CHANGELOG.md > /tmp/diff.txt
           cat /tmp/diff.txt
 
       - name: Setup defect
@@ -31,7 +39,7 @@ jobs:
         with:
           version: "0.3.2"
 
-      - name: Check the diff
+      - name: Review the diff
         env:
           OPENAI_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENAI_API_BASE: https://api.deepseek.com/
@@ -46,8 +54,6 @@ jobs:
             - The version number of the latest section is correct.
             - Links at the bottom are updated and correct.
             - All "Added"/"Changed"/"Fixed"/"Removed" etc sections are h3.
-          - For README
-            - The version number in the usage example is correct.
           - Ignore all other files.
 
           If you think the diff is correct, output 'OK' with nothing else.
