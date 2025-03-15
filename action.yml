@@ -1,0 +1,34 @@
+name: "Setup Defect"
+description: "Set up defect binary."
+author: "DiscreteTom"
+
+inputs:
+  version:
+    description: "Version of defect binary to install"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache Defect
+      uses: actions/cache@v3
+      id: cache-defect
+      with:
+        path: /tmp/defect
+        key: ${{ runner.os }}-defect-${{ inputs.version }}
+
+    - name: Setup Defect
+      if: steps.cache-defect.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p /tmp/defect
+        cd /tmp/defect
+        wget https://github.com/DiscreteTom/defect/releases/download/v${{ inputs.version }}/defect-v${{ inputs.version }}-x86_64-unknown-linux-musl.zip
+        unzip defect-v${{ inputs.version }}-x86_64-unknown-linux-musl.zip
+        rm defect-v${{ inputs.version }}-x86_64-unknown-linux-musl.zip
+        chmod +x defect
+        echo /tmp/defect >> $GITHUB_PATH
+
+branding:
+  icon: "box"
+  color: "green"
