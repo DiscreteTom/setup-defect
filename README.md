@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Rust toolchains and cross-rs
+      - name: Setup defect
         uses: DiscreteTom/setup-defect@v0.1.0
         with:
           version: "0.3.2"
