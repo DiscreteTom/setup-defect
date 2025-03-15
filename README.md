@@ -18,7 +18,7 @@ jobs:
       - name: Setup defect
         uses: DiscreteTom/setup-defect@v0.1.1
         with:
-          version: "0.3.2"
+          version: "0.3.2" # specify the latest defect version
 
       - name: Using the defect binary
         env:
