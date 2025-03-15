@@ -12,16 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fetch tags
-        run: git fetch --tags
-
-      - name: Get previous tag
+      - name: Fetch previous tag
         run: |
-          echo "$(git describe --tags --abbrev=0 HEAD^)" > /tmp/previous-tag
-          cat /tmp/previous-tag
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git describe --tags --abbrev=0 HEAD^ > /tmp/previous-tag
 
-      - name: Fetch the previous tag
-        run: git fetch origin $(cat /tmp/previous-tag)
+      - name: Fetch the commit of the previous tag
+        run: |
+          git fetch --depth=1 origin $(cat /tmp/previous-tag)
 
       - name: Get diff
         run: |
