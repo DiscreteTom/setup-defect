@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-03-15
+
 ### Fixed
 
 - Update PATH when cache hit.
@@ -17,5 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/DiscreteTom/setup-defect/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/DiscreteTom/setup-defect/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/DiscreteTom/setup-defect/releases/tag/v0.1.1
 [0.1.0]: https://github.com/DiscreteTom/setup-defect/releases/tag/v0.1.0

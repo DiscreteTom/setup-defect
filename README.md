@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup defect
-        uses: DiscreteTom/setup-defect@v0.1.0
+        uses: DiscreteTom/setup-defect@v0.1.1
         with:
           version: "0.3.2"
 
