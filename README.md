@@ -5,6 +5,9 @@
 
 This GitHub Action sets up the [defect](https://github.com/DiscreteTom/defect) binary in your workflow.
 
+> [!NOTE]
+> This action only supports Linux x86_64 platform for now.
+
 ## Usage
 
 ```yaml
