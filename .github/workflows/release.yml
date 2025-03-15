@@ -42,7 +42,7 @@ jobs:
           You are a coding expert.
           Review the following diff, only ensure that:
           - For CHANGELOG
-            - Nothing is under [Unreleased] section.
+            - Nothing is under [Unreleased] section. The section should exist but be empty.
             - The version number of the latest section is correct.
             - Links at the bottom are updated and correct.
             - All "Added"/"Changed"/"Fixed"/"Removed" etc sections are h3.
