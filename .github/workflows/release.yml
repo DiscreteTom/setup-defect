@@ -23,28 +23,32 @@ jobs:
       - name: Fetch the previous tag
         run: git fetch origin $(cat /tmp/previous-tag)
 
-      - name: Get CHANGELOG diff
+      - name: Get diff
         run: |
-          git diff $(cat /tmp/previous-tag)..HEAD -U20 CHANGELOG.md > /tmp/changelog_diff.txt
-          cat /tmp/changelog_diff.txt
+          git diff $(cat /tmp/previous-tag)..HEAD -U20 CHANGELOG.md README.md > /tmp/diff.txt
+          cat /tmp/diff.txt
 
       - name: Setup defect
         uses: ./
 
-      - name: Check the CHANGELOG
+      - name: Check the diff
         env:
           OPENAI_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENAI_API_BASE: https://api.deepseek.com
         run: |
-          diff=$(cat /tmp/changelog_diff.txt)
+          diff=$(cat /tmp/diff.txt)
 
           prompt="
           You are a coding expert.
-          Review the following CHANGELOG diff, only ensure that:
-          - Nothing is under [Unreleased] section.
-          - The version number of the latest section is correct.
-          - Links at the bottom are updated and correct.
-          - All "Added"/"Changed"/"Fixed"/"Removed" etc sections are h3.
+          Review the following diff, only ensure that:
+          - For CHANGELOG
+            - Nothing is under [Unreleased] section.
+            - The version number of the latest section is correct.
+            - Links at the bottom are updated and correct.
+            - All "Added"/"Changed"/"Fixed"/"Removed" etc sections are h3.
+          - For README
+            - The version number in the usage example is correct.
+          - Ignore all other files.
 
           If you think the diff is correct, output 'OK' with nothing else.
           Otherwise, output suggestions in markdown format.
